@@ -1,0 +1,6 @@
+Figuras desta pasta: Twemoji (https://github.com/jdecked/twemoji)
+Copyright 2019 Twitter, Inc. e outros colaboradores.
+Licença: Creative Commons Attribution 4.0 International (CC-BY 4.0)
+https://creativecommons.org/licenses/by/4.0/
+
+O nome de cada arquivo é o código do emoji (por exemplo, 1f3eb.svg = 🏫).

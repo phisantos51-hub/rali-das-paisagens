@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rali das Paisagens</title>
+  <meta name="description" content="Jogo de corrida com Geografia para o Ciclo de Alfabetização.">
+  <link rel="icon" href="imagens/emoji/1f3ce.svg">
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+  <!-- ===== Barra de cima: sempre visível ===== -->
+  <header class="barra">
+    <div class="logo"><span data-e="🏎️"></span> Rali das Paisagens</div>
+    <nav class="barra-botoes">
+      <button id="btn-pausa" class="btn-barra" hidden><span data-e="⏸️"></span> Pausar</button>
+      <button id="btn-ajuda" class="btn-barra"><span data-e="❓"></span> Como jogar</button>
+      <button id="btn-som" class="btn-barra" aria-pressed="false"><span data-e="🔇"></span> Som desligado</button>
+      <button id="btn-inicio" class="btn-barra" hidden><span data-e="🏠"></span> Início</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ===== Tela inicial ===== -->
+    <section id="tela-inicio" class="tela ativa">
+      <div class="capa">
+        <h1><span data-e="🏁"></span> RALI DAS PAISAGENS <span data-e="🏎️"></span></h1>
+        <p>Corra pelas paisagens e descubra o mundo!</p>
+        <div class="capa-paisagens">
+          <span data-e="🏙️"></span><span data-e="🌾"></span><span data-e="🏖️"></span><span data-e="🌳"></span><span data-e="🏞️"></span>
+        </div>
+      </div>
+
+      <div class="passo">
+        <h2><span class="num">1</span> Quem vai jogar?</h2>
+        <div class="opcoes" id="op-modo">
+          <button class="opcao" data-modo="solo" aria-pressed="true">
+            <span class="opcao-ico"><span data-e="🚗"></span></span>
+            <b>SOZINHO</b><small>1 jogador</small>
+          </button>
+          <button class="opcao" data-modo="dupla" aria-pressed="false">
+            <span class="opcao-ico"><span data-e="🚗"></span><span data-e="🚙"></span></span>
+            <b>DUPLA</b><small>2 jogadores, mesmo teclado</small>
+          </button>
+        </div>
+      </div>
+
+      <div class="passo">
+        <h2><span class="num">2</span> Qual é o seu ano?</h2>
+        <div class="opcoes" id="op-ano">
+          <button class="opcao ano ano1" data-ano="1" aria-pressed="true"><b>1º ANO</b><small><span data-e="🏠"></span> lugares, dia e noite</small></button>
+          <button class="opcao ano ano2" data-ano="2" aria-pressed="false"><b>2º ANO</b><small><span data-e="🚌"></span> transportes e trabalhos</small></button>
+          <button class="opcao ano ano3" data-ano="3" aria-pressed="false"><b>3º ANO</b><small><span data-e="🗺️"></span> paisagens e mapas</small></button>
+        </div>
+      </div>
+
+      <div class="passo">
+        <h2><span class="num">3</span> Escolha a fase</h2>
+        <div id="lista-fases" class="grade-fases"></div>
+      </div>
+
+      <div class="passo opcoes-extra">
+        <h2><span data-e="⚙️"></span> Opções</h2>
+        <div class="linha-opcao">
+          <span class="rotulo"><span data-e="🚦"></span> Velocidade:</span>
+          <div class="opcoes pequenas" id="op-velocidade">
+            <button class="opcao" data-vel="lenta" aria-pressed="true"><span data-e="🐢"></span> Lenta</button>
+            <button class="opcao" data-vel="media" aria-pressed="false"><span data-e="🐇"></span> Média</button>
+            <button class="opcao" data-vel="rapida" aria-pressed="false"><span data-e="🐆"></span> Rápida</button>
+          </div>
+        </div>
+        <div class="linha-opcao">
+          <span class="rotulo"><span data-e="⏱️"></span> Contra o relógio:</span>
+          <div class="opcoes pequenas" id="op-relogio">
+            <button class="opcao" data-relogio="nao" aria-pressed="true"><span data-e="❌"></span> Desligado</button>
+            <button class="opcao" data-relogio="sim" aria-pressed="false"><span data-e="✅"></span> Ligado</button>
+          </div>
+        </div>
+      </div>
+
+      <button id="btn-professor" class="btn-discreto" title="Área do professor"><span data-e="🔑"></span> Área do professor</button>
+    </section>
+
+    <!-- ===== Tela da missão ===== -->
+    <section id="tela-missao" class="tela">
+      <div class="cartao-missao">
+        <div class="missao-topo">
+          <span id="missao-paisagem" class="missao-paisagem"></span>
+          <div>
+            <h2>MISSÃO</h2>
+            <p id="missao-fase" class="missao-fase"></p>
+          </div>
+        </div>
+        <p id="missao-texto" class="missao-texto"></p>
+        <div class="missao-grupos">
+          <div class="grupo pegue">
+            <h3><span data-e="✅"></span> PEGUE</h3>
+            <div id="missao-certas" class="fila-placas"></div>
+          </div>
+          <div class="grupo desvie">
+            <h3><span data-e="❌"></span> DESVIE</h3>
+            <div id="missao-erradas" class="fila-placas"></div>
+          </div>
+        </div>
+        <p id="missao-caminhos" class="dica"></p>
+        <div class="botoes-missao">
+          <button id="btn-voltar-missao" class="btn-secundario"><span data-e="⬅️"></span> Voltar</button>
+          <div id="missao-controles" class="controles"></div>
+          <div class="comecar">
+            <button id="btn-comecar" class="btn-grande verde"><span data-e="🚦"></span> COMEÇAR!</button>
+            <p class="dica-tecla">ou aperte <kbd class="tecla mini">ESPAÇO</kbd></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Tela da corrida ===== -->
+    <section id="tela-corrida" class="tela">
+      <div id="pistas" class="pistas"></div>
+    </section>
+
+    <!-- ===== Tela do resultado ===== -->
+    <section id="tela-resultado" class="tela">
+      <div class="cartao-resultado">
+        <div id="resultado-conteudo"></div>
+        <div class="botoes-resultado">
+          <button id="btn-repetir" class="btn-grande azul"><span data-e="🔁"></span> Jogar de novo</button>
+          <button id="btn-proxima" class="btn-grande verde"><span data-e="➡️"></span> Próxima fase</button>
+          <button id="btn-fases" class="btn-grande amarelo"><span data-e="🏠"></span> Escolher fase</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Janela: Como jogar ===== -->
+  <div id="modal-ajuda" class="modal" hidden>
+    <div class="modal-caixa larga" role="dialog" aria-labelledby="titulo-ajuda">
+      <h2 id="titulo-ajuda"><span data-e="❓"></span> Como jogar</h2>
+      <div class="ajuda-grade">
+        <div class="ajuda-item">
+          <div class="ajuda-figura"><kbd class="tecla">←</kbd><span data-e="🚗"></span><kbd class="tecla">→</kbd></div>
+          <p>Mude de <b>faixa</b> com as setas <b>←</b> e <b>→</b>.</p>
+        </div>
+        <div class="ajuda-item">
+          <div class="ajuda-figura"><kbd class="tecla">↑</kbd><span data-e="💨"></span> <kbd class="tecla">↓</kbd><span data-e="🛑"></span></div>
+          <p><b>↑</b> acelera. <b>↓</b> freia.</p>
+        </div>
+        <div class="ajuda-item">
+          <div class="ajuda-figura"><span data-e="📜"></span></div>
+          <p>Leia a <b>missão</b> antes de correr.</p>
+        </div>
+        <div class="ajuda-item">
+          <div class="ajuda-figura"><span data-e="✅"></span><span class="placa-mini"><span data-e="🏫"></span></span></div>
+          <p>Passe <b>por cima</b> das placas <b>certas</b>.</p>
+        </div>
+        <div class="ajuda-item">
+          <div class="ajuda-figura"><span data-e="❌"></span><span class="placa-mini"><span data-e="🐄"></span></span><span data-e="🚧"></span></div>
+          <p><b>Desvie</b> das placas erradas e dos obstáculos.</p>
+        </div>
+        <div class="ajuda-item">
+          <div class="ajuda-figura"><span data-e="↖️"></span><span data-e="🌳"></span><span data-e="↗️"></span></div>
+          <p>A estrada se divide? Leia a placa e <b>escolha o caminho</b>.</p>
+        </div>
+        <div class="ajuda-item">
+          <div class="ajuda-figura"><span data-e="🗺️"></span></div>
+          <p>No 3º ano, olhe o <b>mapa</b> e a <b>legenda</b> no canto.</p>
+        </div>
+        <div class="ajuda-item">
+          <div class="ajuda-figura"><span data-e="⭐"></span><span data-e="⭐"></span><span data-e="⭐"></span></div>
+          <p>Ganhe até <b>3 estrelas</b>!</p>
+        </div>
+        <div class="ajuda-item dupla">
+          <div class="ajuda-figura">
+            <span class="jog j1">J1</span><kbd class="tecla">W</kbd><kbd class="tecla">A</kbd><kbd class="tecla">S</kbd><kbd class="tecla">D</kbd>
+            <span class="jog j2">J2</span><kbd class="tecla">↑</kbd><kbd class="tecla">←</kbd><kbd class="tecla">↓</kbd><kbd class="tecla">→</kbd>
+          </div>
+          <p><b>Dupla:</b> o Jogador 1 usa <b>W A S D</b>. O Jogador 2 usa as <b>setas</b>.</p>
+        </div>
+      </div>
+      <p class="ajuda-nota"><span data-e="⏸️"></span> Para pausar: botão <b>Pausar</b> ou tecla <kbd class="tecla mini">P</kbd>.</p>
+      <button class="btn-grande verde btn-fechar" data-fechar="modal-ajuda"><span data-e="👍"></span> Entendi!</button>
+    </div>
+  </div>
+
+  <!-- ===== Janela: Pausa ===== -->
+  <div id="modal-pausa" class="modal" hidden>
+    <div class="modal-caixa" role="dialog" aria-labelledby="titulo-pausa">
+      <h2 id="titulo-pausa"><span data-e="⏸️"></span> Pausa</h2>
+      <p class="grande">O jogo está parado.</p>
+      <div class="botoes-coluna">
+        <button id="btn-continuar" class="btn-grande verde"><span data-e="▶️"></span> Continuar</button>
+        <button id="btn-pausa-ajuda" class="btn-grande azul"><span data-e="❓"></span> Como jogar</button>
+        <button id="btn-pausa-sair" class="btn-grande amarelo"><span data-e="🏠"></span> Sair da corrida</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Janela: Área do professor ===== -->
+  <div id="modal-professor" class="modal" hidden>
+    <div class="modal-caixa" role="dialog" aria-labelledby="titulo-prof">
+      <h2 id="titulo-prof"><span data-e="🔑"></span> Área do professor</h2>
+      <div id="prof-pergunta">
+        <p class="grande">Quanto é <b id="prof-conta"></b>?</p>
+        <input id="prof-resposta" type="number" inputmode="numeric" autocomplete="off" aria-label="Resposta">
+        <p id="prof-aviso" class="aviso" hidden>Resposta errada. Tente de novo.</p>
+        <div class="botoes-linha">
+          <button class="btn-secundario" data-fechar="modal-professor">Cancelar</button>
+          <button id="prof-entrar" class="btn-grande azul">Entrar</button>
+        </div>
+      </div>
+      <div id="prof-painel" hidden>
+        <p>O progresso fica guardado <b>só neste computador</b>, neste navegador.</p>
+        <div class="botoes-coluna">
+          <button id="prof-liberar" class="btn-grande verde"><span data-e="🔓"></span> Liberar todas as fases</button>
+          <button id="prof-apagar" class="btn-grande vermelho"><span data-e="🗑️"></span> Apagar progresso</button>
+        </div>
+        <p id="prof-mensagem" class="mensagem-ok" hidden></p>
+        <p class="creditos">Imagens: Twemoji (Twitter, Inc. e colaboradores), licença CC-BY 4.0.</p>
+        <button class="btn-secundario" data-fechar="modal-professor">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Janela: Confirmar apagar ===== -->
+  <div id="modal-confirmar" class="modal" hidden>
+    <div class="modal-caixa" role="alertdialog" aria-labelledby="titulo-confirmar">
+      <h2 id="titulo-confirmar"><span data-e="⚠️"></span> Tem certeza?</h2>
+      <p class="grande">Isso apaga <b>todas as estrelas</b> e trava as fases de novo neste computador.</p>
+      <div class="botoes-linha">
+        <button class="btn-grande azul" data-fechar="modal-confirmar">Não, cancelar</button>
+        <button id="confirmar-apagar" class="btn-grande vermelho"><span data-e="🗑️"></span> Sim, apagar</button>
+      </div>
+    </div>
+  </div>
+
+  <noscript><p class="noscript">Este jogo precisa do JavaScript ligado no navegador.</p></noscript>
+
+  <script src="missoes.js"></script>
+  <script src="jogo.js"></script>
+</body>
+</html>
